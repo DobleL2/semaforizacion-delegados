@@ -5,9 +5,10 @@ FROM python:3.10
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Install necessary packages and Microsoft ODBC Driver for SQL Server
+# Install necessary packages, apt-utils, and Microsoft ODBC Driver for SQL Server
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+        apt-utils \
         curl \
         apt-transport-https \
         gnupg2 \
@@ -25,18 +26,8 @@ RUN apt-get update && \
 # Set the working directory in the container
 WORKDIR /app
 
-# Install virtualenv
-RUN pip install virtualenv
-
-# Create and activate a virtual environment
-RUN virtualenv venv
-ENV VIRTUAL_ENV=/app/venv
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-
-# Copy the dependencies file to the working directory
+# Install dependencies directly in the system Python environment
 COPY ./app/requirements.txt /app/
-
-# Install dependencies
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
