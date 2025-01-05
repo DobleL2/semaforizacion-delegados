@@ -1,6 +1,7 @@
 import pyodbc
 from dotenv import load_dotenv
 import os
+import streamlit as st
 
 # Cargar las variables de entorno desde el archivo .env
 load_dotenv()
@@ -31,5 +32,5 @@ def get_sql_connection():
         print("Conexión exitosa a la base de datos.")
         return connection
     except Exception as e:
-        print("Error al conectar con la base de datos:", e)
+        st.write("Error al conectar con la base de datos:", e)
         return None
