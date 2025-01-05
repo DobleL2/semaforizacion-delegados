@@ -247,15 +247,16 @@ if not filtered_data.empty:
     }
 # Generate bar chart
     if provincia_filter == 'Todas' and canton_filter == 'Todos' and parroquia_filter == 'Todas':
-        bar_data = filtered_data.groupby('NOMBRE PROVINCIA')['Delegados_Asignados'].sum()
+        bar_data = filtered_data.groupby('NOMBRE PROVINCIA')[['NUM_JUNR','Delegados_Asignados']].sum()
     elif canton_filter == 'Todos' and parroquia_filter == 'Todas':
-        bar_data = filtered_data.groupby('NOMBRE CANTON')['Delegados_Asignados'].sum()
+        bar_data = filtered_data.groupby('NOMBRE CANTON')[['NUM_JUNR','Delegados_Asignados']].sum()
     elif parroquia_filter == 'Todas':
-        bar_data = filtered_data.groupby('NOMBRE PARROQUIA')['Delegados_Asignados'].sum()
+        bar_data = filtered_data.groupby('NOMBRE PARROQUIA')[['NUM_JUNR','Delegados_Asignados']].sum()
     else:
-        bar_data = filtered_data.groupby('NOMBRE RECINTO')['Delegados_Asignados'].sum()
+        bar_data = filtered_data.groupby('NOMBRE RECINTO')[['NUM_JUNR','Delegados_Asignados']].sum()
 
-    bar_data = (bar_data / bar_data.sum() * 100).round(2).sort_values(ascending=False)
+    
+    bar_data = (bar_data['Delegados_Asignados'] / bar_data['NUM_JUNR'] * 100).round(2).sort_values(ascending=False)
 
     bar_options_2 = {
         "title": {"text": "Porcenateje de avance", "left": "center", "textStyle": {"color": "#FFFFFF"}},
@@ -273,6 +274,8 @@ if not filtered_data.empty:
         "yAxis": {
             "type": "value",
             "axisLine": {"lineStyle": {"color": "#FFFFFF"}},
+            "min": 0,  # Fija el valor mínimo en 0
+            "max": 100,  # Fija el valor máximo en 100
             "axisLabel": {"color": "#FFFFFF"}
         },
         "series": [
@@ -280,7 +283,7 @@ if not filtered_data.empty:
                 "data": bar_data.values.tolist(),
                 "type": "bar",
                 "label": {"show": True, "position": "top", "color": "#FFFFFF"},
-                "itemStyle": {"color": "#1f78b4"}
+                "itemStyle": {"color": "#dbd324"}
             }
         ],
     }
