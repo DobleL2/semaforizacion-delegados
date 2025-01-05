@@ -6,6 +6,6 @@ services:
       context: ../
       dockerfile: docker/Dockerfile
     ports:
-      - "9505:9505"
+      - "9206:9206"
     volumes:
       - ./../app:/app
