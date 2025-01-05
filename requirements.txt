@@ -1,6 +1,0 @@
-Pillow
-streamlit
-folium
-streamlit-folium
-streamlit-echarts
-openpyxl

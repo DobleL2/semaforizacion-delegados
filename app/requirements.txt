@@ -1,0 +1,11 @@
+Pillow
+streamlit
+folium
+streamlit-folium
+streamlit-echarts
+openpyxl
+pyodbc
+python-dotenv
+streamlit_authenticator
+pyyaml
+watchdog
