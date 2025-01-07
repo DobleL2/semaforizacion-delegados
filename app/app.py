@@ -222,11 +222,11 @@ elif st.session_state['authentication_status']:
             if 'admin' in st.session_state['username'].split('_'):
                 cirunscripcion = ['Todos'] + sorted(filtered_data['NOMBRE CIRCUNSCRIPCIÓN'].unique().tolist())
             elif 'guayas' in st.session_state['username'].split('_'):
-                cirunscripcion = [f'CIRCUNSCRIPCIÓN {st.session_state['username'].split('_')[2]}']
+                cirunscripcion = [f"CIRCUNSCRIPCIÓN {st.session_state['username'].split('_')[2]}"]
             elif 'pichincha' in st.session_state['username'].split('_'):
-                cirunscripcion = [f'CIRCUNSCRIPCIÓN {st.session_state['username'].split('_')[2]}']
+                cirunscripcion = [f"CIRCUNSCRIPCIÓN {st.session_state['username'].split('_')[2]}"]
             elif 'manabi' in st.session_state['username'].split('_'):
-                cirunscripcion = [f'CIRCUNSCRIPCIÓN {st.session_state['username'].split('_')[2]}']
+                cirunscripcion = [f"CIRCUNSCRIPCIÓN {st.session_state['username'].split('_')[2]}"]
                 
             cirunscripcion_filter = col1.selectbox("Selecciona la Circunscripcion", cirunscripcion)
             if cirunscripcion_filter != 'Todos':
