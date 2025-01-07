@@ -126,7 +126,11 @@ elif st.session_state['authentication_status'] is None:
     st.info('Please enter your username and password')
 elif st.session_state['authentication_status']:
     # Create a Streamlit app
-    st.title("Semaforización según asignación de delegados")
+    col1,col2 = st.columns([5,1])
+    
+    col1.title("Semaforización según asignación de delegados")
+    with col2:
+        authenticator.logout('Cerrar Sesión')
     st.header('Seleccionar tipo')
     tipo = st.radio("Tipo de consulta", ["Control Electoral","Conteo Rápido"], key="tipo_consulta",horizontal=True)
     # Load the Excel file and select relevant columns
@@ -186,9 +190,22 @@ elif st.session_state['authentication_status']:
 
     col1, col2 = st.columns([1, 4])
     col1.subheader("Filtros")
+
     # Filters for provincia, canton, and parroquia
     # Provincia filter
-    provincias = ['Todas'] + sorted(locations['NOMBRE PROVINCIA'].unique().tolist())
+    provincias = []
+    if 'admin' in st.session_state['username'].split('_'):
+        provincias = ['Todas'] + sorted(locations['NOMBRE PROVINCIA'].unique().tolist())
+    elif 'guayas' in st.session_state['username'].split('_'):
+        provincias = ['GUAYAS']
+    elif 'pichincha' in st.session_state['username'].split('_'):
+        provincias = ['PICHINCHA']
+    elif 'manabi' in st.session_state['username'].split('_'):
+        provincias = ['MANABI']
+    else:
+        provincias = [st.session_state['username'].upper()]
+        
+    #provincias = ['Todas'] + sorted(locations['NOMBRE PROVINCIA'].unique().tolist())
     provincia_filter = col1.selectbox("Selecciona la Provincia", provincias)
 
     filtered_data = locations.copy()
@@ -201,7 +218,16 @@ elif st.session_state['authentication_status']:
 
     if provincia_filter != 'Todas':
         if provincia_filter in ['PICHINCHA', 'GUAYAS', 'MANABI']:
-            cirunscripcion = ['Todos'] + sorted(filtered_data['NOMBRE CIRCUNSCRIPCIÓN'].unique().tolist())
+            cirunscripcion = []
+            if 'admin' in st.session_state['username'].split('_'):
+                cirunscripcion = ['Todos'] + sorted(filtered_data['NOMBRE CIRCUNSCRIPCIÓN'].unique().tolist())
+            elif 'guayas' in st.session_state['username'].split('_'):
+                cirunscripcion = [f'CIRCUNSCRIPCIÓN {st.session_state['username'].split('_')[2]}']
+            elif 'pichincha' in st.session_state['username'].split('_'):
+                cirunscripcion = [f'CIRCUNSCRIPCIÓN {st.session_state['username'].split('_')[2]}']
+            elif 'manabi' in st.session_state['username'].split('_'):
+                cirunscripcion = [f'CIRCUNSCRIPCIÓN {st.session_state['username'].split('_')[2]}']
+                
             cirunscripcion_filter = col1.selectbox("Selecciona la Circunscripcion", cirunscripcion)
             if cirunscripcion_filter != 'Todos':
                 filtered_data = filtered_data[filtered_data['NOMBRE CIRCUNSCRIPCIÓN'] == cirunscripcion_filter]
