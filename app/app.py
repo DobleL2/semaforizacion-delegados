@@ -151,6 +151,7 @@ elif st.session_state['authentication_status']:
                 data = pd.merge(df, data, left_on='cod_recinto', right_on='CODIGO RECINTO', how='right')
                 
                 data['Delegados_Asignados'] = data['delegados_asignados'].fillna(0)
+                data['NUM_JUNR'] = data['delegados_asignar'].fillna(0)
                 data = data[original_columns]
             except Exception as e:
                 st.error(f"Error al ejecutar la consulta: {e}")
