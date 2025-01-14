@@ -203,6 +203,8 @@ elif st.session_state['authentication_status']:
         provincias = ['PICHINCHA']
     elif 'manabi' in st.session_state['username'].split('_'):
         provincias = ['MANABI']
+    elif 'canar' in st.session_state['username'].split('_'):
+        provincias = ['CAÑAR']
     else:
         provincias = [st.session_state['username'].upper()]
         
