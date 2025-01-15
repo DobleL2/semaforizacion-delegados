@@ -206,7 +206,7 @@ elif st.session_state['authentication_status']:
     elif 'canar' in st.session_state['username'].split('_'):
         provincias = ['CAÑAR']
     else:
-        provincias = [st.session_state['username'].upper()]
+        provincias = [st.session_state['username'].upper().replace('_',' ')]
         
     #provincias = ['Todas'] + sorted(locations['NOMBRE PROVINCIA'].unique().tolist())
     provincia_filter = col1.selectbox("Selecciona la Provincia", provincias)
