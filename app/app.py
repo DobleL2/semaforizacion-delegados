@@ -1,3 +1,4 @@
+import io
 import streamlit as st
 import time
 
@@ -13,6 +14,15 @@ from yaml.loader import SafeLoader
 import streamlit_authenticator as stauth 
 
 st.set_page_config(page_title="Mapa de Ubicaciones", layout="wide")
+
+def resumen_data(df):
+    # Guardar el DataFrame en un buffer de bytes
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
+        df.to_excel(writer, index=False, sheet_name="data")
+    output.seek(0)
+    
+    return output
 
 with open('./data_users.yaml') as file:
     config = yaml.load(file,Loader=SafeLoader)
@@ -105,7 +115,7 @@ def display_full_width_map(folium_map):
             {map_html}
         </div>
         """,
-        height=500,
+        height=650,
     )
 
 # --- HIDE #MAIN-MENU/FOOTER/HEADER -------
@@ -372,7 +382,6 @@ elif st.session_state['authentication_status']:
             bar_data = filtered_data.groupby('NOMBRE PARROQUIA')[['NUM_JUNR','Delegados_Asignados']].sum()
         else:
             bar_data = filtered_data.groupby('NOMBRE RECINTO')[['NUM_JUNR','Delegados_Asignados']].sum()
-
         
         bar_data = (bar_data['Delegados_Asignados'] / bar_data['NUM_JUNR'] * 100).round(2).sort_values(ascending=False)
 
@@ -416,10 +425,15 @@ elif st.session_state['authentication_status']:
         # Display bar chart
         with col2:
             st_echarts(options=bar_options)
-            
+
         st_echarts(options=bar_options_2)
+        st.download_button(
+            label="Descargar registros procesados por usuarios en Excel",
+            data=resumen_data(bar_data),
+            file_name="production.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
 
     else:
         st.warning("No se encontraron ubicaciones con los filtros seleccionados.")
-
 

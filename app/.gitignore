@@ -5,3 +5,7 @@ sandbox
 .env
 
 data_users.yaml
+
+*.DS_Store
+
+/__pycache__

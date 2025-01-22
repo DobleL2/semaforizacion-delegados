@@ -9,3 +9,4 @@ python-dotenv
 streamlit_authenticator
 pyyaml
 watchdog
+xlsxwriter
